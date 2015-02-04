@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+    <head>
+        <link href="/imageviewer/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <h1>comp</h1>
+                <h3>Dir: <a href="<%= request.url.sub('/comp', '/list/output') %>" target="_blank"><%= @dir_path %></a></h3>
+                <%= showPagingHeader %>
+            </div>
+            <div class="row">
+                <% @images_path.each do |img| %>
+                    <h5><%= filename %></h5>
+                    <div class="row">
+                        <div class="span4">
+                            <% srcimg = img.sub('output', 'input') %>
+                            <a href="<%= srcimg %>" target="_blank"><img src="<%= srcimg %>"></a>
+                            <div style="word-break: break-all;"><%= srcimg %></div>
+                        </div>
+                        <div class="span4 offset2">
+                            <a href="<%= img %>" target="_blank"><img src="<%= img %>"></a>
+                            <div style="word-break: break-all;"><%= img %></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="span6 offset6">
+                            <% if @info.has_key?(filename) %>
+                                <h5>output log</h5>
+                                <pre><%= @info[filename] %></pre>
+                            <% end %>
+                            <% debugimg = debugImagePath(img) %>
+                            <% if debugimg %>
+                                <h5>debug image</h5>
+                                <a href="<%= debugimg %>" target="_blank"><%= debugimg %></a>
+                            <% end %>
+                        </div>
+                    </div>
+                    <div class="row"><hr></div>
+                <% end %>
+            </div>
+            <div class="row"><%= showPagingNavi() %></div>
+        </div>
+    </body>
+</html>

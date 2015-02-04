@@ -1,0 +1,15 @@
+<div class="row">
+    <ol class="breadcrumb">
+        <% if @state[:nowdir].nil? || @state[:nowdir] == "" %>
+            <li><a href="<%= nowurl %>" class="btn btn-default">/</a></li>
+        <% else %>
+            <% interdir_list(@state[:nowdir]).each do |dir| %>
+                <% if dir == "" %>
+                    <li><a href="<%= routeurl() + '/' %>" class="btn btn-default">images</a></li>
+                <% else %>
+                    <li><a href="<%= routeurl() + dir %>" class="btn btn-default"><%= dir.split('/').last %></a></li>
+                <% end %>
+            <% end %>
+        <% end %>
+    </ol>
+</div>

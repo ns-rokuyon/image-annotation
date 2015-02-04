@@ -1,0 +1,6 @@
+<div class="row">
+    <h3>sub directories</h3>
+    <% @dirs.each do |dir| %>
+        <a href="<%= nowurl() + '/' + dir.split('/')[-1] %>" class="btn btn-default"><%= dir.split('/').last %></a>
+    <% end %>
+</div>

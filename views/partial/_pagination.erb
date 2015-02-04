@@ -1,0 +1,18 @@
+<nav>
+    <ul class="pagination">
+        <li class="<%= pagination_li_class('Previous')%>">
+            <a href="<%= pagination_prevurl %>" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <% 5.times do |num| %>
+            <% start = num * @paging + 1 %>
+            <li class="<%= pagination_li_class(start) %>"><a href="<%= pagination_pagingurl(start) %>"><%= start %></a></li>
+        <% end %>
+        <li class="<%= pagination_li_class('Next')%>">
+            <a href="<%= pagination_nexturl %>" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>

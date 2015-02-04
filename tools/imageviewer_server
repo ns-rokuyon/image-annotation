@@ -1,0 +1,123 @@
+#!/bin/bash
+
+usage(){
+    cat <<DOC
+usage: ./imageviewer.sh <sub_command>
+sub_command:
+    - start
+    - stop
+    - restart
+    - check
+DOC
+}
+
+start_server(){
+    pgrep unicorn > /dev/null
+    if [ $? -eq 0 ]; then
+        echo "unicorn is already running"
+    else
+        cd ~/sinatra/imageviewer
+        bundle exec unicorn -E development -c unicorn.rb -D
+        if [ $? -ne 0 ]; then
+            echo "start unicorn : failed"
+            exit 1
+        fi
+        echo "start unicorn : done"
+    fi
+
+    pgrep nginx > /dev/null
+    if [ $? -eq 0 ]; then
+        echo "nginx is already running"
+    else
+        sudo service nginx start
+        if [ $? -ne 0 ]; then
+            echo "start nginx : failed"
+            exit 1
+        fi
+        echo "start nginx : done"
+        echo "port : `grep listen /etc/nginx/nginx.conf | awk -F' ' '{print $NF}' | tr ';' ' '`"
+    fi
+}
+
+stop_server(){
+    echo "pgrep unicorn"
+    ps aux | grep -E '[u]nicorn master' > /dev/null
+    if [ $? -eq 0 ]; then
+        pid=`ps aux | grep -E '[u]nicorn master' | awk '{print $2}'`
+        kill $pid
+        if [ $? -ne 0 ]; then
+            echo "stop unicorn : failed"
+            exit 1
+        fi
+    else
+        echo "no unicorn process exists"
+    fi
+    echo "stop unicorn : done"
+
+    echo "pgrep nginx"
+    pgrep nginx
+    if [ $? -eq 0 ]; then
+        sudo service nginx stop
+        if [ $? -ne 0 ]; then
+            echo "stop nginx : failed"
+            exit 1
+        fi
+    else
+        echo "no nginx process exists"
+        exit 1
+    fi
+    echo "stop nginx : done"
+}
+
+restart_server(){
+    stop_server
+    start_server
+}
+
+check_process(){
+    echo "----------"
+    echo "unicorn:"
+    rows=`ps aux | grep unicorn | wc -l`
+    if [ "$rows" -ne 1 ]; then
+        ps aux | grep unicorn
+    else
+        echo "    stop"
+    fi
+
+    echo "----------"
+    echo "nginx:"
+    rows=`ps aux | grep nginx | wc -l`
+    if [ "$rows" -ne 1 ]; then
+        ps aux | grep nginx
+        echo "port : `grep listen /etc/nginx/nginx.conf | awk -F' ' '{print $NF}' | tr ';' ' '`"
+    else
+        echo "    stop"
+    fi
+    exit 0
+}
+
+main(){
+    local sub_command=$1
+
+    case $sub_command in
+        "start")
+            start_server
+            ;;
+        "stop")
+            stop_server
+            ;;
+        "restart")
+            restart_server
+            ;;
+        "check")
+            check_process
+            ;;
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+    exit 0
+}
+
+main $@

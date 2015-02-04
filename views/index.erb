@@ -1,0 +1,10 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+    <%= partial_erb(:head) %>
+    <body>
+        <%= partial_erb(:navbar) %>
+        <div class="container">
+            <%= partial_erb(:header, :locals => {:title => settings.app_name, :subtitle => ''}) %>
+        </div>
+    </body>
+</html>

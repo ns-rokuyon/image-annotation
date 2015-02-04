@@ -1,0 +1,10 @@
+development:
+    app_name        :   'ImageViewer'
+    upload_enable   :   false
+    http_port       :   8082
+    entry_point     :   'imageviewer'
+    default_paging  :   50
+    bootstrap_dir   :   'bootstrap-3.3.2-dist'
+    enable_module   :
+        listview: True
+        compare: False

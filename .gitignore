@@ -1,0 +1,8 @@
+/.bundle
+/vendor
+/logs
+/tmp
+/unicorn.rb
+/public/image
+/public/bootstrap-3.3.2-dist
+*.swp

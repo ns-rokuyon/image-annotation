@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+    <%= partial_erb(:head) %>
+    <body>
+        <%= partial_erb(:navbar) %>
+        <div class="container">
+            <div class="row">
+                <%= partial_erb(:header, :locals => {:title => 'Listview', :subtitle => @state[:nowdir]}) %>
+                <%= partial_erb(:dircrumbs) %>
+            </div>
+            <%= partial_erb(:subdirs) %>
+
+            <div class="row">
+                <h3>images</h3>
+                <%= partial_erb(:pagination) %>
+            </div>
+            <div class="row">
+                <% @images.each_with_index do |image, idx| %>
+                    <% if idx % 6 == 0 %>
+                        <div class="row"> <div class="col-md-2"> <a href="<%= image %>" target="_blank"><img src="<%= image %>" class="img-thumbnail"></a><%= File.basename(image) %></div>
+                    <% elsif idx % 6 == 5 %>
+                        <div class="col-md-2"> <a href="<%= image %>" target="_blank"><img src="<%= image %>" class="img-thumbnail"></a><%= File.basename(image) %></div></div><div class="row"><div class="col-md-12"><hr></div></div>
+                    <% else %>
+                        <div class="col-md-2"> <a href="<%= image %>" target="_blank"><img src="<%= image %>" class="img-thumbnail"></a><%= File.basename(image) %></div>
+                    <% end %>
+                <% end %>
+            </div>
+            <div class="row">
+                <%= partial_erb(:pagination) %>
+            </div>
+        </div>
+    </body>
+</html>
