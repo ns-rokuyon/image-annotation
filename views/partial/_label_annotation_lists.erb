@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-bordered">
+            <% @lists.each do |listfile| %>
+                <tr>
+                    <td>
+                        <a href="<%= route_link("annotation/label/#{listfile.name}")%>">
+                            <%= listfile.name %>
+                        </a>
+                    </td>
+                    <td><%= listfile.content["description"] %></td>
+                </tr>
+            <% end %>
+        </table>
+    </div>
+</div>

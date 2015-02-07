@@ -1,8 +1,51 @@
 # coding: utf-8
 require 'sinatra/base'
+require 'yaml'
 
 module Sinatra
     module CommonHelper
+        class Imagefile
+            include Comparable
+
+            def initialize(path, baseurl)
+                @filename = path.split('/').last
+                @name = @filename.split('.').first
+                @path = path
+                @url = path.gsub('public', baseurl)
+            end
+
+            def <=>(other)
+                @filename <=> other.filename
+            end
+
+            attr_reader :filename, :name, :path, :url
+        end
+
+        Listfile = Struct.new(:filename, :path, :url, :content) do
+            def load_content!
+                if filename.nil?
+                    self.content = nil
+                    return self
+                end
+                ex = filename.split('.').last
+                if ex == "yaml"
+                    self.content = YAML.load_file(path)
+                else
+                    self.content = File.open(path, 'r') do |fp|
+                        fp.readlines
+                    end
+                end
+                self
+            end
+
+            def name
+                self.filename.split('.').first
+            end
+
+            def name?(_name)
+                _name == name
+            end
+        end
 
         def partial_erb(name, options={})
             erb "partial/_#{name}".to_sym, options.merge(:layout => false)
@@ -25,7 +68,7 @@ module Sinatra
             "#{baseurl}/#{settings.entry_point}"
         end
 
-        def baseurl()
+        def baseurl
             if settings.http_port == 80
                 "#{request.script_name}/"
             else
@@ -39,7 +82,7 @@ module Sinatra
             Dir.glob("#{dirpath}/*").each do |item|
                 item.gsub!('//', '/')
                 if FileTest.file?(item)
-                    images.push(item.gsub('public', baseurl()))
+                    images.push(Imagefile.new(item, baseurl))
                 elsif FileTest.directory?(item)
                     dirs.push(item.gsub('public/images/',''))
                 end
@@ -47,6 +90,25 @@ module Sinatra
             return images if get == :image
             return dirs if get == :dir
             return images.sort, dirs.sort
+        end
+
+        def getlistfiles(dirpath)
+            lists = []
+            Dir.glob("#{dirpath}/*").each do |item|
+                item.gsub!('//', '/')
+                if FileTest.file?(item)
+                    lists.push(
+                        Listfile.new(
+                            item.split('/')[-1],
+                            item,
+                            item.gsub('public', baseurl())
+                        )
+                    )
+                end
+            end
+            lists.map do |list|
+                list.load_content!
+            end
         end
 
         def paging(images)

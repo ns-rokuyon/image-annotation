@@ -1,10 +1,14 @@
 development:
-    app_name        :   'ImageViewer'
+    app_name        :   ImageViewer
     upload_enable   :   false
     http_port       :   8082
-    entry_point     :   'imageviewer'
+    entry_point     :   imageviewer
     default_paging  :   50
-    bootstrap_dir   :   'bootstrap-3.3.2-dist'
+    bootstrap_dir   :   bootstrap-3.3.2-dist
     enable_module   :
         listview: True
         compare: False
+        annotation: True
+    db_name:    imageviewer
+    label_annotation_conf_dir:  public/conf/annotation/label
+    label_annotation_collection_name_prefix: label_

@@ -10,6 +10,9 @@
             <% if settings.enable_module['compare'] %>
                 <li><a href="<%= route_link('compare') %>">Compare</a></li>
             <% end %>
+            <% if settings.enable_module['annotation'] %>
+                <li><a href="<%= route_link('annotation') %>">Annotation</a></li>
+            <% end %>
         </ul>
     </div>
 </nav>
