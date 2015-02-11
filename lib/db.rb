@@ -1,5 +1,6 @@
 # coding: utf-8
 require 'mongo'
+require 'lib/exception'
 
 class AnnotationDB
     def initialize(dbname=nil, collectionname=nil)
@@ -32,6 +33,30 @@ class AnnotationDB
     rescue => e
         warn e.message
         nil
+    end
+
+    def update(name, doc)
+        @collection.update({"name" => name}, doc)
+    rescue => e
+        warn e.message
+        nil
+    end
+
+    def find(cond)
+        @collection.find(cond).to_a
+    rescue => e
+        warn e.message
+        nil
+    end
+
+    def exist?(name)
+        cond = {"name" => name}
+        res = find(cond)
+        return false if res.nil? || res.empty?
+        true
+    rescue => e
+        warn e.message
+        raise
     end
 
     def all

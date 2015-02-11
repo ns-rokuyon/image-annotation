@@ -1,5 +1,6 @@
 # coding:utf-8
 $:.unshift(File.expand_path(File.dirname(__FILE__)))
+require 'json'
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/config_file'
@@ -23,7 +24,6 @@ class ImageViewerApp < Sinatra::Base
     helpers Sinatra::LabelHelper
 
     before do
-        puts "before"
     end
 
     get '/' + settings.entry_point + '/?' do
@@ -53,6 +53,11 @@ class ImageViewerApp < Sinatra::Base
     get '/' + settings.entry_point + '/annotation/?' do
         route_annotation
         erb :annotation
+    end
+
+    post '/' + settings.entry_point + '/annotation/label/task/:task/:operation' do
+        data = route_labeldb
+        JSON.dump(data)
     end
 
     not_found do

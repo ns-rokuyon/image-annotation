@@ -1,0 +1,7 @@
+description: test label annotation
+open: True
+image_dir: reflec
+labels:
+    - hoge
+    - fuga
+    - piyo

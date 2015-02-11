@@ -1,0 +1,26 @@
+<!-- Modal -->
+<div class="modal fade" id="label_modal" tabindex="-1" role="dialog" aria-labelledby="label_modal_title" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="label_modal_title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+          <img id="label_modal_image" class="thumbnail center-block" style="max-width: 300px">
+          <div class="list-group">
+              <% @labels.each do |label| %>
+                  <a href="#" data-posturl="<%= url_register_labeldb(@list.name, 'add') %>" 
+                     class="list-group-item set_label_link" data-dismiss="modal" 
+                     data-postlabel="<%= label %>">
+                      <%= label %>
+                  </a>
+              <% end %>
+          </div> 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

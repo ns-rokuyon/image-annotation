@@ -4,6 +4,7 @@
     <body>
         <%= partial_erb(:navbar) %>
         <div class="container">
+            <div id="tmpdata"></div>
             <div class="row">
                 <%= partial_erb(:header, :locals => {:title => 'Annotate labels', :subtitle => @list.name}) %>
             </div>
@@ -12,23 +13,12 @@
                 <h3>images</h3>
                 <%= partial_erb(:pagination) %>
             </div>
-            <div class="row">
-                <% @images.each_with_index do |image, idx| %>
-                    <div class="col-md-2">
-                        <div class="thumbnail">
-                            <a href="<%= image.url %>" target="_blank"><img src="<%= image.url %>" class="img-thumbnail"></a>
-                            <div class="caption"> 
-                                <h5><%= File.basename(image.filename) %></h5>
-                                <a class="btn btn-default"><%= @annodata[image.url] %></a>
-                            </div>
-                        </div>
-                    </div>
-                <% end %>
-            </div>
+            <%= partial_erb(:label_annotation_items) %>
             <div class="row">
                 <%= partial_erb(:pagination) %>
             </div>
         </div>
+        <%= partial_erb(:label_modal) %>
     </body>
 </html>
 

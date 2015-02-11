@@ -7,18 +7,19 @@ module Sinatra
         class Imagefile
             include Comparable
 
-            def initialize(path, baseurl)
-                @filename = path.split('/').last
-                @name = @filename.split('.').first
-                @path = path
-                @url = path.gsub('public', baseurl)
+            def initialize(path, baseurl, image_root_dir)
+                @filename = path.split('/').last                # "hoge.jpg"
+                @name = @filename.split('.').first              # "hoge"
+                @path = path.sub("#{image_root_dir}/", '')      # "path/to/hoge.jpg"
+                @path_from_app_root = path                      # "settings.image_root_dir/path/to/hoge.jpg"
+                @url = path.gsub('public', baseurl)             # "http://host/images/path/to/hoge.jpg"
             end
 
             def <=>(other)
                 @filename <=> other.filename
             end
 
-            attr_reader :filename, :name, :path, :url
+            attr_reader :filename, :name, :path, :path_from_app_root, :url
         end
 
         Listfile = Struct.new(:filename, :path, :url, :content) do
@@ -82,9 +83,9 @@ module Sinatra
             Dir.glob("#{dirpath}/*").each do |item|
                 item.gsub!('//', '/')
                 if FileTest.file?(item)
-                    images.push(Imagefile.new(item, baseurl))
+                    images.push(Imagefile.new(item, baseurl, settings.image_root_dir))
                 elsif FileTest.directory?(item)
-                    dirs.push(item.gsub('public/images/',''))
+                    dirs.push(item.gsub("#{settings.image_root_dir}/",''))
                 end
             end
             return images if get == :image

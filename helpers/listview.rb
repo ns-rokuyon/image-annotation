@@ -6,7 +6,7 @@ module Sinatra
         def route_listview()
             @state = {}
             @state[:nowdir] = params[:splat][0].sub(/\/$/,'')
-            @state[:dirpath] = "public/images/#{@state[:nowdir]}"
+            @state[:dirpath] = "#{settings.image_root_dir}/#{@state[:nowdir]}"
 
             @images, @dirs = getlist(@state[:dirpath])
             @state[:all_image_num] = @images.size

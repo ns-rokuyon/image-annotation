@@ -4,11 +4,13 @@ development:
     http_port       :   8082
     entry_point     :   imageviewer
     default_paging  :   50
+    image_root_dir  :   public/images
     bootstrap_dir   :   bootstrap-3.3.2-dist
+    jquery_path     :   public/js/jquery-2.1.3.min.js
     enable_module   :
         listview: True
         compare: False
         annotation: True
     db_name:    imageviewer
-    label_annotation_conf_dir:  public/conf/annotation/label
+    label_annotation_conf_dir:  public/task/annotation/label
     label_annotation_collection_name_prefix: label_
