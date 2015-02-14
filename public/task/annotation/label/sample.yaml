@@ -1,6 +1,6 @@
 description: test label annotation
 open: True
-image_dir: reflec
+image_dir: sampleimages
 labels:
     - hoge
     - fuga
