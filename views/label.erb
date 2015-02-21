@@ -5,7 +5,7 @@
         <%= partial_erb(:navbar) %>
         <div class="container">
             <%= partial_erb(:header, :locals => {:title => "Label annotation", :subtitle => ''}) %>
-            <%= partial_erb(:label_annotation_lists) %>
+            <%= partial_erb(:annotation_task_list, :locals => {:annotation => "label"}) %>
         </div>
     </body>
 </html>

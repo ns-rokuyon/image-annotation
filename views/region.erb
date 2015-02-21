@@ -1,0 +1,11 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+    <%= partial_erb(:head) %>
+    <body>
+        <%= partial_erb(:navbar) %>
+        <div class="container">
+            <%= partial_erb(:header, :locals => {:title => "region annotation", :subtitle => ''}) %>
+            <%= partial_erb(:annotation_task_list, :locals => {:annotation => "region"}) %>
+        </div>
+    </body>
+</html>

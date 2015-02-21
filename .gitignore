@@ -3,7 +3,7 @@
 /logs
 /tmp
 /unicorn.rb
-/public/image
+/public/images
 /public/bootstrap-3.3.2-dist
 /public/task/annotation/label/*
 !/public/task/annotation/label/sample.yaml

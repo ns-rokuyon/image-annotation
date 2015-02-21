@@ -2,8 +2,8 @@
 require 'sinatra/base'
 require 'yaml'
 
-module Sinatra
-    module CommonHelper
+module Sinatra::ImageAnnotationApp::Common
+    module Helpers
         class Imagefile
             include Comparable
 
@@ -121,5 +121,7 @@ module Sinatra
         end
     end
 
-    helpers CommonHelper
+    def self.registered(app)
+        app.helpers Helpers
+    end
 end

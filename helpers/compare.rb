@@ -1,8 +1,8 @@
 # coding: utf-8
 require 'sinatra/base'
 
-module Sinatra
-    module CompareHelper
+module Sinatra::ImageAnnotationApp::Compare
+    module Helpers
         def route_compare()
             @state = {}
             @state[:nowdir] = params[:splat][0].sub(/\/$/,'')
@@ -30,10 +30,15 @@ module Sinatra
             end
             info
         end
-
-        private :read_info
     end
 
-    helpers CompareHelper
-end
+    def self.registered(app)
+        app.helpers Helpers
 
+        # route: compare
+        app.get '/' + app.settings.entry_point + '/compare/*' do
+            route_compare 
+            erb :comp
+        end
+    end
+end

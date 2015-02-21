@@ -1,8 +1,8 @@
 # coding: utf-8
 require 'sinatra/base'
 
-module Sinatra
-    module ListviewHelper
+module Sinatra::ImageAnnotationApp::Listview
+    module Helpers
         def route_listview()
             @state = {}
             @state[:nowdir] = params[:splat][0].sub(/\/$/,'')
@@ -13,7 +13,15 @@ module Sinatra
 
             @images = paging(@images)
         end
+
     end
 
-    helpers ListviewHelper
+    def self.registered(app)
+        app.helpers Helpers
+
+        app.get '/' + app.settings.entry_point + '/list/*' do
+            route_listview
+            erb :listview
+        end
+    end
 end

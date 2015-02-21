@@ -2,8 +2,8 @@
 require 'sinatra/base'
 require 'lib/label_db'
 
-module Sinatra
-    module LabelHelper
+module Sinatra::ImageAnnotationApp::Label
+    module Helpers
         def route_label_annotation_list
             @lists = getlistfiles(settings.label_annotation_conf_dir)
         end
@@ -72,5 +72,28 @@ module Sinatra
         end
     end
 
-    helpers LabelHelper
+    def self.registered(app)
+        return unless app.settings.enable_annotation_modules["label"]
+
+        app.helpers Helpers
+        app.settings.annotations.push(app::Annotations.new("Label", "annotation/label", "annotate label to images"))
+
+        # route: label annotation task list
+        app.get '/' + app.settings.entry_point + '/annotation/label/?' do
+            route_label_annotation_list
+            erb :label
+        end
+
+        # route: label annotation
+        app.get '/' + app.settings.entry_point + '/annotation/label/:task/?' do
+            route_label_annotation
+            erb :label_annotation
+        end
+
+        # route: DB API for label annotation
+        app.post '/' + app.settings.entry_point + '/annotation/label/task/:task/:operation' do
+            data = route_labeldb
+            JSON.dump(data)
+        end
+    end
 end
