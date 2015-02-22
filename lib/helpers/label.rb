@@ -1,6 +1,6 @@
 # coding: utf-8
 require 'sinatra/base'
-require 'lib/label_db'
+require 'lib/db/label_db'
 
 module Sinatra::ImageAnnotationApp::Label
     module Helpers
@@ -26,6 +26,10 @@ module Sinatra::ImageAnnotationApp::Label
 
             db = AnnotationDB.new(settings.db_name, collectionname) 
             @annodata = db.all_labeldata
+        rescue ImageAnnotationAppError => e
+            logger.error e.message
+            status 500
+            raise
         end
 
         def collectionname
@@ -65,8 +69,8 @@ module Sinatra::ImageAnnotationApp::Label
             end
             status 200
             verify
-        rescue => e
-            warn e.message
+        rescue ImageAnnotationAppError => e
+            logger.error e.message
             status 500
             nil
         end

@@ -1,17 +1,21 @@
 # coding: utf-8
 require 'json'
+require 'yaml'
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/config_file'
 
 module Sinatra::ImageAnnotationApp; end     # namespace
 
-require 'helpers/common'
-require 'helpers/views'
-require 'helpers/listview'
-require 'helpers/annotation'
-require 'helpers/label'
-require 'helpers/region'
+require 'lib/exception'
+require 'lib/db'
+
+require 'lib/helpers/common'
+require 'lib/helpers/views'
+require 'lib/helpers/listview'
+require 'lib/helpers/annotation'
+require 'lib/helpers/label'
+require 'lib/helpers/region'
 
 # routes and helpers for base modules
 module Sinatra::ImageAnnotationApp::BaseModules

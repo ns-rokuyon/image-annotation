@@ -1,5 +1,4 @@
 # coding: utf-8
-require 'lib/db'
 
 module LabelDBMod
     def all_labeldata

@@ -1,6 +1,7 @@
 # coding: utf-8
 
-class AnnotationDBError < StandardError; end
+class ImageAnnotationAppError < StandardError; end
 
-class HelperError < StandardError; end
+class AnnotationDBError < ImageAnnotationAppError; end
+class HelperError < ImageAnnotationAppError; end
 class LabelHelperError < HelperError; end

@@ -1,6 +1,6 @@
 # coding:utf-8
 $:.unshift(File.expand_path(File.dirname(__FILE__)))
-require 'helpers/base'
+require 'lib/base'
 
 class Sinatra::ImageAnnotationApp::App < Sinatra::Base
     register Sinatra::Reloader

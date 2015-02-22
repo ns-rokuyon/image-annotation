@@ -1,6 +1,5 @@
 # coding: utf-8
 require 'sinatra/base'
-require 'yaml'
 
 module Sinatra::ImageAnnotationApp::Common
     module Helpers
@@ -88,9 +87,15 @@ module Sinatra::ImageAnnotationApp::Common
                     dirs.push(item.gsub("#{settings.image_root_dir}/",''))
                 end
             end
-            return images if get == :image
-            return dirs if get == :dir
-            return images.sort, dirs.sort
+
+            case get
+            when :image
+                images 
+            when :dir
+                dirs 
+            else
+                [images.sort, dirs.sort]
+            end
         end
 
         def getlistfiles(dirpath)
