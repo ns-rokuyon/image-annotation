@@ -5,7 +5,7 @@
             <a href="<%= image.url %>" target="_blank"><img src="<%= image.url %>" class="img-thumbnail"></a>
             <div class="caption"> 
                 <h5><%= File.basename(image.filename) %></h5>
-                <a class="btn <%= btn_class(@annodata[image.path]) %>" data-toggle="modal" data-target="#label_modal" id="index_<%= idx %>">
+                <a class="btn <%= btn_class(@annodata[image.path]) %>" data-toggle="modal" data-target="<%= locals[:data_target] %>" id="index_<%= idx %>">
                     <%= @annodata[image.path] %>
                 </a>
             </div>

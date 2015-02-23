@@ -5,6 +5,8 @@ module Sinatra::ImageAnnotationApp::Views
     module Helpers
         def bootstrap_css; "/#{settings.bootstrap_dir}/css/bootstrap.min.css" end
         def bootstrap_js;  "/#{settings.bootstrap_dir}/js/bootstrap.min.js" end
+        def jcrop_css; "/#{settings.jcrop_dir}/css/jquery.Jcrop.min.css" end
+        def jcrop_js;  "/#{settings.jcrop_dir}/js/jquery.Jcrop.min.js" end
         def jquery_js; "/#{settings.jquery_path.sub('public/','')}" end
 
         def route_link(route)

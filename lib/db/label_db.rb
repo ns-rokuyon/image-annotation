@@ -9,18 +9,9 @@ module LabelDBMod
         labeldata
     end
 
-    def find_byimage(imagepath)
-        query = {"name" => imagepath}
-        res = find(query)
-        raise AnnotationDBError, "#{imagepath} is not in DB" if res.nil? || res.empty?
-        raise AnnotationDBError, "#{imagepath} is duplicated in DB" if res.size != 1
-        row = res.first
-        row.delete('_id')
-        row
-    end
 
 end
 
-class AnnotationDB
+class LabelAnnotationDB < AnnotationDB
     include LabelDBMod
 end

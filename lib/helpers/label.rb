@@ -24,7 +24,7 @@ module Sinatra::ImageAnnotationApp::Label
 
             @images = paging(@images)
 
-            db = AnnotationDB.new(settings.db_name, collectionname) 
+            db = LabelAnnotationDB.new(settings.db_name, collectionname) 
             @annodata = db.all_labeldata
         rescue ImageAnnotationAppError => e
             logger.error e.message
@@ -54,7 +54,7 @@ module Sinatra::ImageAnnotationApp::Label
             label = @params[:label]
             imagepath = @params[:imagepath]
 
-            db = AnnotationDB.new(settings.db_name, collectionname) 
+            db = LabelAnnotationDB.new(settings.db_name, collectionname) 
             operation = db.exist?(imagepath) ? 'update' : 'add'
             case operation
             when 'add'
@@ -89,7 +89,7 @@ module Sinatra::ImageAnnotationApp::Label
         end
 
         # route: label annotation
-        app.get '/' + app.settings.entry_point + '/annotation/label/:task/?' do
+        app.get '/' + app.settings.entry_point + '/annotation/label/task/:task/?' do
             route_label_annotation
             erb :label_annotation
         end

@@ -4,21 +4,22 @@
     <body>
         <%= partial_erb(:navbar) %>
         <div class="container">
-            <div id="tmpdata"></div>
+            <div id="tmpdata" data-posturl="<%= url_register_regiondb(@list.name, 'add') %>"></div>
             <div class="row">
-                <%= partial_erb(:header, :locals => {:title => 'Annotate labels', :subtitle => @list.name}) %>
+                <%= partial_erb(:header, :locals => {:title => 'Annotate Region', :subtitle => @list.name}) %>
             </div>
 
             <div class="row">
                 <h3>images</h3>
                 <%= partial_erb(:pagination) %>
             </div>
-            <%= partial_erb(:annotation_items, :locals => {:data_target => '#label_modal'}) %>
+            <%= partial_erb(:annotation_items, :locals => {:data_target => '#region_modal'}) %>
             <div class="row">
                 <%= partial_erb(:pagination) %>
             </div>
         </div>
-        <%= partial_erb(:label_modal) %>
+        <%= partial_erb(:region_modal) %>
     </body>
 </html>
+
 

@@ -6,6 +6,7 @@ development:
     default_paging  :   50
     image_root_dir  :   public/images
     bootstrap_dir   :   bootstrap-3.3.2-dist
+    jcrop_dir       :   Jcrop
     jquery_path     :   public/js/jquery-2.1.3.min.js
     enable_module   :
         listview: True

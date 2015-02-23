@@ -4,7 +4,7 @@
             <% @lists.each do |listfile| %>
                 <tr>
                     <td>
-                        <a href="<%= route_link("annotation/#{locals[:annotation]}/#{listfile.name}")%>">
+                        <a href="<%= route_link("annotation/#{locals[:annotation]}/task/#{listfile.name}")%>">
                             <%= listfile.name %>
                         </a>
                     </td>
