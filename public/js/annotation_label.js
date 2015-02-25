@@ -23,6 +23,26 @@ $(function(){
         });
     });
 
+    $("#label_remove_button").on("click", function(e){
+        var posturl = $(this).data('posturl');
+        var imagepath = $("#tmpdata").data("imagepath");
+        var a_btn_id = $("#tmpdata").data("index");
+        $.ajax({
+            type: "POST",
+            url: posturl,
+            dataType: "json",
+            data: {
+                "imagepath": imagepath
+            }
+        }).done(function(res){
+            $("#" + a_btn_id).html("no labeled").removeClass("btn-success").addClass("btn-default");
+            $('#label_modal_image').attr('src', '')
+                .attr('data-imagepath', '').attr('data-index', '');
+        }).fail(function(res){
+            console.log(res);
+        });
+    });
+
     $('#label_modal').on('show.bs.modal', function(e){
         var div_caption = e.relatedTarget.parentElement;
         var div_thumbbox = div_caption.parentElement;

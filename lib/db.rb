@@ -38,6 +38,12 @@ class AnnotationDB
         raise AnnotationDBError, "#{e.message} : name=#{name}, doc=#{doc}"
     end
 
+    def remove(cond)
+        @collection.remove(cond)
+    rescue => e
+        raise AnnotationDBError, "#{e.message} : cond=#{cond}"
+    end
+
     def find(cond)
         @collection.find(cond).to_a
     rescue => e

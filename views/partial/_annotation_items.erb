@@ -1,15 +1,24 @@
-<div class="row">
+<% row_opened = false %>
 <% @images.each_with_index do |image, idx| %>
-    <div class="col-md-2">
-        <div class="thumbnail" data-imagepath="<%= image.path %>">
-            <a href="<%= image.url %>" target="_blank"><img src="<%= image.url %>" class="img-thumbnail"></a>
-            <div class="caption"> 
-                <h5><%= File.basename(image.filename) %></h5>
-                <a class="btn <%= btn_class(@annodata[image.path]) %>" data-toggle="modal" data-target="<%= locals[:data_target] %>" id="index_<%= idx %>">
-                    <%= @annodata[image.path] %>
-                </a>
+    <% if idx % 6 == 0 %>
+        <% row_opened = true %>
+        <div class="row">
+    <% end %>
+        <div class="col-md-2">
+            <div class="thumbnail" data-imagepath="<%= image.path %>">
+                <a href="<%= image.url %>" target="_blank"><img src="<%= image.url %>" class="img-thumbnail"></a>
+                <div class="caption"> 
+                    <h5><%= File.basename(image.filename) %></h5>
+                    <a class="btn <%= btn_class(@annodata[image.path]) %>" data-toggle="modal" data-target="<%= locals[:data_target] %>" id="index_<%= idx %>">
+                        <%= @annodata[image.path] %>
+                    </a>
+                </div>
             </div>
         </div>
+    <% if idx % 6 == 5 %>
+        </div>
+    <% end %>
+<% end %>
+<% if row_opened %>
     </div>
 <% end %>
-</div>

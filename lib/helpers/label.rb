@@ -55,12 +55,23 @@ module Sinatra::ImageAnnotationApp::Label
             imagepath = @params[:imagepath]
 
             db = LabelAnnotationDB.new(settings.db_name, collectionname) 
-            operation = db.exist?(imagepath) ? 'update' : 'add'
+            if operation != 'remove'
+                operation = db.exist?(imagepath) ? 'update' : 'add'
+            end
+
             case operation
             when 'add'
                 db.insert({"name" => imagepath, "label" => label})
             when 'update'
                 db.update(imagepath, {"name" => imagepath, "label" => label})
+            when 'remove'
+                unless db.exist?(imagepath)
+                    status 400
+                    return nil
+                end
+                db.remove({"name" => imagepath})
+                status 200
+                return {imagepath => 'removed'}
             end
             
             verify = db.find_byimage(imagepath)
@@ -74,6 +85,7 @@ module Sinatra::ImageAnnotationApp::Label
             status 500
             nil
         end
+
     end
 
     def self.registered(app)
