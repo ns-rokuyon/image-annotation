@@ -5,11 +5,11 @@ require 'lib/db/label_db'
 module Sinatra::ImageAnnotationApp::Label
     module Helpers
         def route_label_annotation_list
-            @lists = getlistfiles(settings.label_annotation_conf_dir)
+            @lists = getlistfiles(settings.label_annotation["conf_dir"])
         end
 
         def route_label_annotation
-            @list = getlistfiles(settings.label_annotation_conf_dir).find do |listfile|
+            @list = getlistfiles(settings.label_annotation["conf_dir"]).find do |listfile|
                 listfile.name?(params[:task])
             end
             @labels = @list.content["labels"]
@@ -24,7 +24,8 @@ module Sinatra::ImageAnnotationApp::Label
 
             @images = paging(@images)
 
-            db = LabelAnnotationDB.new(settings.db_name, collectionname) 
+            db = LabelAnnotationDB.new(settings.db_name, 
+                                       collectionname(@params[:task], :label_annotation)) 
             @annodata = db.all_labeldata
         rescue ImageAnnotationAppError => e
             logger.error e.message
@@ -32,9 +33,6 @@ module Sinatra::ImageAnnotationApp::Label
             raise
         end
 
-        def collectionname
-            "#{settings.label_annotation_collection_name_prefix}#{@params[:task]}"
-        end
 
         def url_register_labeldb(task, operation)
             '/' + settings.entry_point + "/annotation/label/task/#{task}/#{operation}"
@@ -54,7 +52,8 @@ module Sinatra::ImageAnnotationApp::Label
             label = @params[:label]
             imagepath = @params[:imagepath]
 
-            db = LabelAnnotationDB.new(settings.db_name, collectionname) 
+            db = LabelAnnotationDB.new(settings.db_name, 
+                                       collectionname(@params[:task],:label_annotation)) 
             if operation != 'remove'
                 operation = db.exist?(imagepath) ? 'update' : 'add'
             end

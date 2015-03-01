@@ -26,8 +26,10 @@ module Sinatra::ImageAnnotationApp::Region
             
             @images = paging(@images)
             
-            db = RegionAnnotationDB.new(settings.db_name, collectionname) 
+            db = RegionAnnotationDB.new(settings.db_name, 
+                                        collectionname(@params[:task], :region_annotation))
             @annodata = db.all_regiondata
+            gon.annodata = @annodata
         end
 
         def url_register_regiondb(task, operation)
@@ -37,26 +39,40 @@ module Sinatra::ImageAnnotationApp::Region
         def register_region
             task = @params[:task]
             operation = @params[:operation]
-            doc = {
-                "name" => @params[:imagepath],
+            name = @params[:imagepath]
+            region_index = @params[:region_index].to_i
+            region = {
                 "x" =>  @params[:x],
                 "y" =>  @params[:y],
                 "width" => @params[:width],
                 "height" => @params[:height]
             }
 
-            collectionname = "#{settings.region_annotation["collection_name_prefix"]}#{@params[:task]}"
-            db = RegionAnnotationDB.new(settings.db_name, collectionname) 
-            operation = db.exist?(doc["name"]) ? 'update' : 'add'
+            db = RegionAnnotationDB.new(settings.db_name, 
+                                        collectionname(@params[:task], :region_annotation))
+
+            p region_index
             case operation
-            when 'add'
-                db.insert(doc)
-            when 'update'
-                db.update(doc["name"], doc)
+            when 'add', 'update'
+                unless db.exist?(name)
+                    db.insert({"name" => name, "regions" => [region]})
+                else
+                    res = db.find_byimage(name)
+                    raise ImageAnnotationAppError, "#{name} is not found" if res.nil?
+                    if res["regions"].size == region_index
+                        db.update(name, {"name" => name, "regions" => res["regions"].push(region)} )
+                    else
+                        res["regions"][region_index] = region
+                        db.update(name, {"name" => name, "regions" => res["regions"]})
+                    end
+                end
+            when 'remove'
             end
             
             status 200
-            db.find_byimage(doc["name"])
+            db.find_byimage(name)
+
+            db.all_regiondata
         rescue ImageAnnotationAppError => e
             logger.error e.message
             status 500

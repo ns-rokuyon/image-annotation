@@ -16,8 +16,9 @@ development:
         label: True
         region: True
     db_name:    imageviewer
-    label_annotation_conf_dir:  public/task/annotation/label
-    label_annotation_collection_name_prefix: label_
+    label_annotation:
+        conf_dir:  public/task/annotation/label
+        collection_name_prefix: label_
     region_annotation:
         conf_dir: public/task/annotation/region
         collection_name_prefix: region_

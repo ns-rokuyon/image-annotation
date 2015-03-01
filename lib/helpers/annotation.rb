@@ -7,6 +7,10 @@ module Sinatra::ImageAnnotationApp::Annotation
         def route_annotation
             @annotations = settings.annotations
         end
+
+        def collectionname(task, annotation)
+            "#{settings.send(annotation)["collection_name_prefix"]}#{task}"
+        end
     end
 
     def self.registered(app)

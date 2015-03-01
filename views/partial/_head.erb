@@ -1,10 +1,12 @@
 <head>
+    <%= include_gon(:namespace => 'app') %>
     <link href="<%= bootstrap_css %>" rel="stylesheet">
     <link href="<%= jcrop_css %>" rel="stylesheet">
     <link href="/css/app.css" rel="stylesheet">
     <script type="text/javascript" src="<%= jquery_js %>"></script>
     <script type="text/javascript" src="<%= bootstrap_js %>"></script>
     <script type="text/javascript" src="<%= jcrop_js %>"></script>
+    <script type="text/javascript" src="/js/common.js"></script>
     <script type="text/javascript" src="/js/annotation_label.js"></script>
     <script type="text/javascript" src="/js/annotation_region.js"></script>
 </head>

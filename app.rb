@@ -5,6 +5,7 @@ require 'lib/base'
 class Sinatra::ImageAnnotationApp::App < Sinatra::Base
     register Sinatra::Reloader
     register Sinatra::ConfigFile
+    register Gon::Sinatra
 
     configure do
         enable :logging

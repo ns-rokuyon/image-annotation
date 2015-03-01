@@ -4,6 +4,7 @@ require 'yaml'
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/config_file'
+require 'gon-sinatra'
 
 module Sinatra::ImageAnnotationApp; end     # namespace
 
