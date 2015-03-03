@@ -51,7 +51,6 @@ module Sinatra::ImageAnnotationApp::Region
             db = RegionAnnotationDB.new(settings.db_name, 
                                         collectionname(@params[:task], :region_annotation))
 
-            p region_index
             case operation
             when 'add', 'update'
                 unless db.exist?(name)
@@ -67,11 +66,24 @@ module Sinatra::ImageAnnotationApp::Region
                     end
                 end
             when 'remove'
+                if db.exist?(name)
+                    res = db.find_byimage(name)
+                    if res.nil?
+                        raise ImageAnnotationAppError, "#{name} is not found"
+                    end
+                    if region_index >= res["regions"].size || region_index < 0
+                        raise ImageAnnotationAppError, "regions index out of range: region_index=#{region_index}" 
+                    end
+                    res["regions"].delete_at(region_index)
+                    if res["regions"].size.zero?
+                        db.remove({"name" => name})
+                    else
+                        db.update(name, {"name" => name, "regions" => res["regions"]})
+                    end
+                end
             end
             
             status 200
-            db.find_byimage(name)
-
             db.all_regiondata
         rescue ImageAnnotationAppError => e
             logger.error e.message

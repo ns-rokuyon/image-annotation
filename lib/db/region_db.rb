@@ -4,7 +4,7 @@
 module RegionDBMod
     DEFAULT_REGIONS = []
     def DEFAULT_REGIONS.summary
-        "0 region"
+        "0 regions"
     end
 
     def all_regiondata

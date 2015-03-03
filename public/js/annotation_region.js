@@ -2,15 +2,17 @@
 
 var jcrop_api;
 var post_region_func;
+var remove_region_func;
 var update_modal_button_func;
 var update_region_list_func;
 
-function registerRegion(coords){
+function onSelectRegion(coords){
     var imagepath = $("#tmpdata").data("imagepath");
     var posturl = $('#tmpdata').data('posturl');
+    var removeurl = $('#tmpdata').data('removeurl');
     var select_region_id = $('input[name="region_selector"]:checked').val();
 
-    post_region_func = function register(){
+    post_region_func = function(){
         $.ajax({
             type: "POST",
             url: posturl,
@@ -37,6 +39,30 @@ function registerRegion(coords){
         jcrop_api.release();
         post_region_func = null;
     }
+
+    remove_region_func = function(){
+        $.ajax({
+            type: "POST",
+            url: removeurl,
+            dataType: "json",
+            data: {
+                "imagepath": imagepath,
+                "region_index": select_region_id
+            }
+        }).done(function(res){
+            app.annodata = res;
+            if ( update_modal_button_func ) {
+                update_modal_button_func(app.annodata);
+            }
+            if ( update_region_list_func ) {
+                update_region_list_func();
+            }
+        }).fail(function(res){
+            console.log(res);
+        });
+        jcrop_api.release();
+        remove_region_func = null;
+    }
 }
 
 
@@ -56,15 +82,15 @@ $(function(){
         var a_btn_id = $(div_caption)[0].children[1].id;
 
         update_modal_button_func = function(new_annodata){
-            var num = new_annodata[imagepath].length;
+            var num = 0;
+            if ( new_annodata[imagepath] ) {
+                num = new_annodata[imagepath].length;
+            }
             $('#' + a_btn_id).html("" + num + " regions");
-            console.log(num);
-            console.log(a_btn_id);
-            update_modal_button_func = null;
         }
 
         $('#region_modal_image').attr('src', imageurl).Jcrop({
-            onSelect: registerRegion,
+            onSelect: onSelectRegion,
             keySupport: false
         }, function(){
             jcrop_api = this;    
@@ -131,6 +157,12 @@ $(function(){
     $('#region_modal_register_button').on('click', function(e){
         if ( post_region_func ) {
             post_region_func();
+        }
+    });
+
+    $('#region_modal_remove_button').on('click', function(e){
+        if ( remove_region_func ) {
+            remove_region_func();
         }
     });
 

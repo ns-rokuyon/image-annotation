@@ -4,7 +4,7 @@
     <body>
         <%= partial_erb(:navbar) %>
         <div class="container">
-            <div id="tmpdata" data-posturl="<%= url_register_regiondb(@list.name, 'add') %>"></div>
+            <div id="tmpdata" data-posturl="<%= url_register_regiondb(@list.name, 'add') %>" data-removeurl="<%= url_register_regiondb(@list.name, 'remove') %>"></div>
             <div class="row">
                 <%= partial_erb(:header, :locals => {:title => 'Annotate Region', :subtitle => @list.name}) %>
             </div>
